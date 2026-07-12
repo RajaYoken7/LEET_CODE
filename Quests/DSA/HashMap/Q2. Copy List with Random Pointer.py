@@ -4,6 +4,7 @@ class Solution(object):
             return None
         temp = head
         while temp:
+            Node = None
             newNode = Node(temp.val)
             newNode.next = temp.next
             temp.next = newNode
