@@ -1,0 +1,269 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+int main()
+{
+   pid_t pid2,pid3;
+   pid2=fork();
+   if(pid2<0)
+      perror("Process failed");
+   else if(pid2==0)
+   {
+      pid3=fork();
+      if(pid3<0)
+	 perror("Process failed");
+      else if(pid3==0)
+      {
+	 printf("Process p3 created\n");
+	 printf("Parent id=%d\nProcess3 id=%d\n\n",getppid(),getpid());
+      }
+      else
+      {
+	 wait(NULL);
+	 printf("Process2 created\n");
+	 printf("Parent id=%d\nProcess2 id=%d\n\n",getppid(),getpid());
+      }
+   }
+   else
+   {
+      wait(NULL);
+      printf("Process1 created\n");
+      printf("Parent id=%d\nProcess1 id=%d\n\n",getppid(),getpid());
+   }
+   return 0;
+}
+
+[24bcs144@mepcolinux ex1]$cat process2.c
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+int main()
+{
+   int n,sum=0,sumodd=0,sumeven=0,i,j,k;
+   printf("Enter value of n:");
+   scanf("%d",&n);
+   pid_t pid2,pid3;
+   pid2=fork();
+   if(pid2<0)
+      perror("Process failed");
+   else if(pid2==0)
+   {
+      printf("Process2 created");
+      for(i=1;i<=n;i++)
+      {
+	 if(i%2!=0)
+	    sumodd=sumodd+i;
+      }
+      printf("Sum of odd numbers is %d\n\n",sumodd);
+   }
+   else
+   {
+      pid3=fork();
+      if(pid3<0)
+	 perror("Process failed");
+      else if(pid3==0)
+      {
+	 printf("Process3 created\n");
+	 for(j=1;j<=n;j++)
+	 {
+	    if(j%2==0)
+	       sumeven=sumeven+j;
+	 }
+	 printf("Sum of even numbers is %d\n\n",sumeven);
+      }
+      else
+      {
+	 wait(NULL);
+	 wait(NULL);
+	 printf("Process1 created\n");
+	 for(k=1;k<=n;k++)
+	    sum=sum+k;
+	 printf("Sum of n numbers is %d\n\n",sum);
+      }
+   }
+   return 0;
+}
+
+
+[24bcs144@mepcolinux ex1]$cat process3.c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+int main() {
+    pid_t p2 = fork();
+
+    if (p2 < 0) {
+        perror("Fork failed");
+        exit(1);
+    } 
+    else if (p2 == 0) {
+        pid_t p4 = fork();
+
+        if (p4 < 0) {
+            perror("Fork failed");
+            exit(1);
+        }
+        else if (p4 == 0) {
+            pid_t p6 = fork();
+
+            if (p6 < 0) {
+                perror("Fork failed");
+                exit(1);
+            }
+            else if (p6 == 0) {
+                printf("P6 finished. PID: %d, Parent P4: %d\n", getpid(), getppid());
+                exit(0); 
+            }
+
+            wait(NULL);
+            printf("P4 finished. PID: %d, Parent P2: %d\n", getpid(), getppid());
+            exit(0); 
+        }
+
+        wait(NULL);
+        printf("P2 finished. PID: %d, Parent P1: %d\n", getpid(), getppid());
+        exit(0); 
+    } 
+    else {
+        pid_t p3 = fork();
+
+        if (p3 < 0) {
+            perror("Fork failed");
+            exit(1);
+        }
+        else if (p3 == 0) {
+            pid_t p7 = fork();
+
+            if (p7 < 0) {
+                perror("Fork failed");
+                exit(1);
+            }
+            else if (p7 == 0) {
+                printf("P7 finished. PID: %d, Parent P3: %d\n", getpid(), getppid());
+                exit(0); 
+            }
+
+            pid_t p8 = fork();
+
+            if (p8 < 0) {
+                perror("Fork failed");
+                exit(1);
+            }
+            else if (p8 == 0) {
+                printf("P8 finished. PID: %d, Parent P3: %d\n", getpid(), getppid());
+                exit(0); 
+            }
+
+            wait(NULL);
+            wait(NULL);
+            printf("P3 finished. PID: %d, Parent P1: %d\n", getpid(), getppid());
+            exit(0); 
+        }
+
+        wait(NULL);
+        wait(NULL);
+        printf("P1 (Root) finished last. PID: %d\n", getpid());
+    }
+
+    return 0;
+}
+
+[24bcs144@mepcolinux ex1]$cat test1.c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main()
+{
+   pid_t pid2 = fork();
+   if(pid2 < 0)
+   {
+      perror("fork failed");
+   }
+   else if(pid2 == 0)
+   {
+      wait(NULL);
+      printf("p2 finished PID:%d,parent id=%d:\n", getpid(), getppid());
+   }
+   else
+   {
+      pid_t pid3 = fork();
+      if(pid3 < 0)
+      {
+         perror("fork failed");
+      }
+      else if(pid3 == 0)
+      {
+         pid_t pid6 = fork();
+         if(pid6 < 0)
+         {
+            perror("fork failed");
+         }
+         else if(pid6 == 0)
+         {
+            printf("p6 finished PID=%d,parent ID:%d\n", getpid(), getppid());
+         }
+         else
+         {
+            pid_t pid7 = fork();
+            if(pid7 < 0)
+            {
+               perror("fork failed");
+            }
+            else if(pid7 == 0)
+            {
+               printf("p7 finished\n");
+            }
+            else
+            {
+               wait(NULL);
+               printf("p3 inner finished PID:%d,parent id:%d\n", getpid(), getppid());
+            }
+         }
+         wait(NULL);
+         printf("p3 finished PID:%d,parent id:%d\n", getpid(), getppid());
+      }
+      else
+      {
+         pid_t pid4 = fork();
+         if(pid4 < 0)
+         {
+            perror("process failed");
+         }
+         else if(pid4 == 0)
+         {
+            printf("p4 finished:p1=%d,parent PID=%d\n", getpid(), getppid());
+         }
+         else
+         {
+            pid_t pid5 = fork();
+            if(pid5 < 0)
+            {
+               perror("process failed");
+            }
+            else if(pid5 == 0)
+            {
+               printf("p5 finished:p1=%d,parent PID=%d\n", getpid(), getppid());
+            }
+            else
+            {
+               wait(NULL);
+               wait(NULL);
+               wait(NULL);
+               wait(NULL);
+               printf("p1 finished\n");
+            }
+         }
+      }
+   }
+   return 0;
+}
+
+[24bcs144@mepcolinux ex1]$
+
+
