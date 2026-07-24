@@ -37,3 +37,19 @@ class Solution:
             # 6. Update total sum and push the new value back into heap
             total_sum = rest_sum + prev_val
             heapq.heappush(max_heap, -prev_val)
+
+# Notes:
+# - Work backwards from the target array to [1, 1, ..., 1] using a Max-Heap.
+# - The largest element was formed by adding the rest of the array sum to some previous value.
+# - `prev_val = largest % rest_sum` is used to handle large jumps quickly.
+# - If we can reduce the largest element to a valid previous state, we push it back.
+#
+# Example Walkthrough: target=[9,3,5]
+# sum=17. heap=[-9,-5,-3]. pop 9.
+# rest_sum=17-9=8. prev = 9 % 8 = 1.
+# push 1. heap=[-5,-3,-1]. total_sum=8+1=9...
+#
+# Time Complexity : O(N log N)
+# Space Complexity: O(N) for heap
+# Technique       : Priority Queue / Max-Heap
+# Pattern         : Working Backwards

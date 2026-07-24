@@ -1,3 +1,4 @@
+from typing import List
 class UnionFind:
     def __init__(self, m, n):
         self.m, self.n = m, n
@@ -50,4 +51,20 @@ class Solution:
                     uf.union(i, j, di, dj)
 
         return uf.find(uf.get_1d_index(0, 0)) == uf.find(uf.get_1d_index(m-1, n-1))
+
+# Notes:
+# - Use Union-Find to connect adjacent cells that have matching pipe openings.
+# - Map 2D grid coordinates to a 1D index for the Union-Find data structure.
+# - For each cell, check if its right or down neighbor has a compatible pipe to form a connection.
+# - Finally, check if the top-left cell (start) is in the same set as the bottom-right cell (end).
+#
+# Example Walkthrough: 2x2 grid. Start at (0,0).
+# If (0,0) connects to (0,1), union them.
+# If (0,1) connects to (1,1), union them.
+# End check: find(0) == find(3) -> True.
+#
+# Time Complexity : O(M*N * alpha(M*N))
+# Space Complexity: O(M*N) for Union-Find arrays
+# Technique       : Union-Find (Disjoint Set)
+# Pattern         : Graph Connectivity
         

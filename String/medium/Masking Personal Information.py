@@ -22,3 +22,17 @@ class Solution:
             }
             
             return country_codes[len(digits)] + local
+
+# Notes:
+# - Separate logic for Email and Phone Number based on the presence of `@`.
+# - For emails, extract the first and last character of the local name, convert to lowercase, and format with `*****`.
+# - For phone numbers, strip all non-digit characters, extract the last 4 digits, and determine the country code mask based on total digits.
+#
+# Example Walkthrough: s="LeetCode@LeetCode.com"
+# Email: name="leetcode", domain="leetcode.com"
+# Mask: l*****e@leetcode.com
+#
+# Time Complexity : O(N)
+# Space Complexity: O(N) for string manipulation
+# Technique       : String Parsing / Conditional Logic
+# Pattern         : String Formatting

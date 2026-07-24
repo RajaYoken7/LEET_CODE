@@ -12,6 +12,7 @@ class Solution(object):
         closest_sum = nums[0] + nums[1] + nums[2]
         
         # xrange is preferred over range in Python 2 for memory efficiency
+        xrange = None
         for i in xrange(n - 2):
             left = i + 1
             right = n - 1
@@ -34,3 +35,20 @@ class Solution(object):
                     right -= 1
                     
         return closest_sum
+
+# Notes:
+# - Sort the array to use the Two-Pointer technique.
+# - Iterate through with `i` as the first element, and use `left` and `right` pointers for the remaining array.
+# - Calculate the `current_sum`. If it exactly matches `target`, return it early.
+# - Track the `closest_sum` by comparing absolute differences.
+# - Adjust pointers: if sum < target, move `left` rightward to increase sum; else move `right` leftward.
+#
+# Example Walkthrough: nums=[-1,2,1,-4], target=1
+# sort: [-4,-1,1,2]. closest = -4-1+1 = -4.
+# i=0 (-4): l=1 (-1), r=3 (2). sum = -3. abs(-3 - 1)=4 < abs(-4 - 1)=5. closest=-3. sum < 1 -> l=2 (1).
+# sum = -4+1+2 = -1. abs(-1 - 1)=2 < 4. closest=-1.
+#
+# Time Complexity : O(N^2)
+# Space Complexity: O(1) or O(N) for sorting
+# Technique       : Two Pointers
+# Pattern         : Target Sum / K-Sum

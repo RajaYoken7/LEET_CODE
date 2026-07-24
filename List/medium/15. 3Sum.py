@@ -32,3 +32,18 @@ class Solution(object):
                     right -= 1
                     
         return new_arr
+
+# Notes:
+# - Sort the array first to use the Two-Pointer approach and easily skip duplicates.
+# - Iterate through the array with `i` as the first element.
+# - Use `left` and `right` pointers to find the other two elements that sum to `-nums[i]`.
+# - Skip duplicate values for `i`, `left`, and `right` to avoid duplicate triplets.
+#
+# Example Walkthrough: nums=[-1,-1,2] (sorted)
+# i=0 (-1). left=1 (-1), right=2 (2). sum = -1 -1 + 2 = 0.
+# Add to result. Skip duplicates.
+#
+# Time Complexity : O(N^2)
+# Space Complexity: O(1) or O(N) for sorting
+# Technique       : Two Pointers
+# Pattern         : Target Sum / K-Sum

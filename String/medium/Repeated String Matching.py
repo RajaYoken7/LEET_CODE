@@ -17,3 +17,20 @@ class Solution:
             
         # 4. If neither works, it's impossible
         return -1
+
+# Notes:
+# - Calculate the minimum number of times `a` must be repeated to at least cover the length of `b`. Let this be `min_repeat`.
+# - `b` can either be fully contained within `a * min_repeat`.
+# - Or, `b` might start near the end of the first `a` and spill over into an extra repetition: `a * (min_repeat + 1)`.
+# - If it's in neither, it's impossible to form `b`.
+#
+# Example Walkthrough: a="abcd", b="cdabcdab"
+# len(a)=4, len(b)=8. min_repeat = ceil(8/4) = 2.
+# a*2 = "abcdabcd". b not in a*2.
+# a*3 = "abcdabcdabcd". b IS in a*3 ("ab[cdabcdab]cd").
+# Return 3.
+#
+# Time Complexity : O(N * (N + M)) for substring search
+# Space Complexity: O(N + M) for string concatenation
+# Technique       : String Concatenation / Math
+# Pattern         : Substring Search

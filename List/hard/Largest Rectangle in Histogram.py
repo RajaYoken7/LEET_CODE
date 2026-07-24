@@ -21,3 +21,18 @@ class Solution:
         # Remove the sentinel so we don't modify the input permanently
         heights.pop()
         return max_area
+
+# Notes:
+# - Use a Monotonic Stack to keep track of indices of the bars in increasing order of height.
+# - When a shorter bar is found, it means the rectangles formed by the taller bars in the stack cannot extend further right.
+# - Pop the taller bars, calculate their area using the current index as the right boundary and the new stack top as the left boundary.
+#
+# Example Walkthrough: heights=[2,1,5]
+# push 2. next is 1 (< 2).
+# pop 2. height=2, width = i(1) - stack(-1) - 1 = 1. area=2.
+# push 1, push 5...
+#
+# Time Complexity : O(N)
+# Space Complexity: O(N) for stack
+# Technique       : Monotonic Stack
+# Pattern         : Largest Area
