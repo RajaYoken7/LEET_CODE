@@ -1,0 +1,56 @@
+class Solution(object):
+    def stoneGameII(self, piles):
+        result1 = []
+
+        take_count = 1
+        skip_count = 2
+        is_taking = True
+        counter = 0
+
+        for item in piles:
+            if is_taking:
+                result1.append(item)
+                counter += 1
+                
+                if counter == take_count:
+                    is_taking = False
+                    counter = 0
+                    take_count *= 2 
+            else:
+                counter += 1
+             
+                if counter == skip_count:
+                    is_taking = True
+                    counter = 0
+                    skip_count *= 2  
+
+        return self.twoStonesTaken (piles,result1)
+    def twoStonesTaken(self,piles,result1):
+        result = []
+
+        take_count = 2   # Start by taking 2 elements
+        skip_count = 4   # Start by skipping 4 elements
+        is_taking = True
+        counter = 0
+
+        for item in piles:
+            if is_taking:
+                result.append(item)
+                counter += 1
+                # Once we have taken enough, switch to skipping
+                if counter == take_count:
+                    is_taking = False
+                    counter = 0
+                    take_count *= 2  # Double the next take target (2 -> 4 -> 8...)
+            else:
+                counter += 1
+                # Once we have skipped enough, switch to taking
+                if counter == skip_count:
+                    is_taking = True
+                    counter = 0
+                    skip_count *= 2  # Double the next skip target (4 -> 8 -> 16...)
+
+        if(result>result1):
+            return result
+        else:
+            return result1
